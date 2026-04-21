@@ -108,6 +108,9 @@ header{
 .fbtn.on{color:var(--accent);border-bottom-color:var(--accent)}
 .fbtn .n{margin-left:5px;font-size:9px;color:var(--muted)}
 .fbtn.on .n{color:var(--accent)}
+@media(max-width:480px){
+  .fbtn{font-size:10px;letter-spacing:1px;padding:14px 10px 12px;flex:1;text-align:center;}
+}
 
 /* GRID */
 .wrap{max-width:1360px;margin:0 auto;padding:40px 20px 80px}
@@ -137,6 +140,11 @@ header{
   filter:brightness(.9);transition:transform .6s ease,filter .3s;
 }
 .card:hover .c-img img{transform:scale(1.05);filter:brightness(1)}
+.c-img-char{position:relative;overflow:hidden;border-radius:10px;margin:10px 10px 0;aspect-ratio:1;cursor:default;}
+.c-img-char img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  filter:brightness(.28);
+}
 .c-img-over{
   position:absolute;inset:0;
   background:linear-gradient(to top,rgba(0,0,0,.55) 0%,transparent 55%);
@@ -173,9 +181,6 @@ header{
 .rev-text{font-size:13px;color:#888;line-height:1.85;word-break:keep-all}
 .rev-text.clamp{
   display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;
-}
-.no-photo .rev-text.clamp{
-  -webkit-line-clamp:14;
 }
 .more-btn{
   background:none;border:none;
@@ -309,6 +314,7 @@ footer{
 (function() {
   var REVIEWS = JSON.parse(document.getElementById('review-data').textContent);
   var cur = 'all';
+  var CHARS = ['char1.png','char2.png','char3.png','char4.png'];
 
   function stars(n) {
     var s = '';
@@ -344,9 +350,14 @@ footer{
           + '<div class="c-img-over"></div>'
           + '<div class="zoom">⊕</div>'
           + '</div>';
+      } else {
+        var charSrc = CHARS[i % CHARS.length];
+        imgHtml = '<div class="c-img-char">'
+          + '<img src="' + charSrc + '" alt="" loading="lazy">'
+          + '</div>';
       }
       var cid = 'ct' + i;
-      var cardClass = r.photo ? 'card' : 'card no-photo';
+      var cardClass = 'card';
       html += '<div class="' + cardClass + '" style="animation-delay:' + delay + 'ms">'
         + imgHtml
         + '<div class="c-body">'
