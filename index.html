@@ -47,7 +47,7 @@ header{
 
 /* HERO */
 .hero{
-  padding:60px 48px 52px;
+  padding:36px 48px 28px;
   text-align:center;
   position:relative;overflow:hidden;
 }
@@ -55,7 +55,7 @@ header{
   content:'';position:absolute;
   top:-60px;left:50%;transform:translateX(-50%);
   width:600px;height:300px;
-  background:radial-gradient(ellipse,rgba(44,255,5,0.06) 0%,transparent 70%);
+  background:radial-gradient(ellipse,rgba(44,255,5,0.025) 0%,transparent 65%);
   pointer-events:none;
 }
 .hero-logo{
@@ -119,7 +119,10 @@ header{
 .fbtn .n{margin-left:5px;font-size:9px;color:var(--muted)}
 .fbtn.on .n{color:var(--accent)}
 @media(max-width:480px){
-  .fbtn{font-size:10px;letter-spacing:1px;padding:14px 10px 12px;flex:1;text-align:center;}
+  .c-img{margin:6px 6px 0;}
+  .c-body{padding:12px 10px 14px;}
+  .rev-text{font-size:11px;}
+  .c-img-char{margin:6px 6px 0;}
 }
 
 /* GRID */
@@ -129,7 +132,7 @@ header{
   grid-template-columns:repeat(3,1fr);
   gap:0;
 }
-@media(max-width:720px){.grid{grid-template-columns:1fr}}
+@media(max-width:720px){.grid{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:721px) and (max-width:1060px){.grid{grid-template-columns:repeat(2,1fr)}}
 
 /* CARD */
@@ -137,6 +140,7 @@ header{
   background:var(--s1);overflow:hidden;
   transition:background .2s;
   animation:fadeUp .4s ease both;
+  cursor:pointer;
 }
 .card:hover{background:var(--s2)}
 @keyframes fadeUp{
@@ -190,7 +194,7 @@ header{
 .sep{height:1px;background:var(--border);margin-bottom:12px}
 .rev-text{font-size:13px;color:#888;line-height:1.85;word-break:keep-all}
 .rev-text.clamp{
-  display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;
+  display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;
 }
 .more-btn{
   background:none;border:none;
@@ -200,28 +204,71 @@ header{
 }
 .more-btn:hover{opacity:1}
 
-/* LIGHTBOX */
+/* LIGHTBOX / REVIEW POPUP */
 .lb{
-  display:none;position:fixed;inset:0;
-  background:rgba(0,0,0,.96);z-index:9999;
-  flex-direction:column;align-items:center;justify-content:center;padding:20px;
+  display:flex;position:fixed;inset:0;
+  background:rgba(0,0,0,.94);z-index:9999;
+  align-items:center;justify-content:center;
+  padding:48px 40px;
   cursor:pointer;
+  overflow:hidden;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity 0.25s ease,visibility 0.25s;
 }
-.lb.open{display:flex}
-.lb img{max-width:90vw;max-height:80vh;object-fit:contain;cursor:default}
+.lb.open{opacity:1;visibility:visible;pointer-events:auto;}
+.lb-inner{
+  display:flex;flex-direction:column;
+  width:100%;max-width:520px;
+  max-height:calc(100vh - 96px);
+  min-height:0;overflow:hidden;
+  cursor:default;
+}
+.lb-img-wrap{flex-shrink:0;width:100%;margin-bottom:22px;}
+.lb-img-wrap img{width:100%;height:auto;max-height:40vh;object-fit:contain;display:block;}
+.lb-inner.no-photo .lb-img-wrap{display:none}
+.lb-meta{flex-shrink:0;width:100%;}
+.lb-scroll-wrap{position:relative;width:100%;}
+.lb-scroll{
+  overflow-y:auto;
+  padding-right:10px;
+  scrollbar-width:thin;
+  scrollbar-color:#444 rgba(255,255,255,0.07);
+}
+.lb-scroll::-webkit-scrollbar{width:4px}
+.lb-scroll::-webkit-scrollbar-thumb{background:#444;border-radius:2px}
+.lb-scroll::-webkit-scrollbar-track{background:rgba(255,255,255,0.05);border-radius:2px}
+.lb-scroll-cue{
+  position:absolute;right:0;top:8%;bottom:8%;
+  width:4px;background:rgba(255,255,255,0.55);border-radius:2px;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.5s ease;
+}
+.lb-scroll-cue.show{opacity:1;transition:none;}
+.lb-stars{font-size:13px;color:var(--accent);letter-spacing:2px;margin-bottom:10px}
+.lb-name-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.lb-name{font-size:13px;font-weight:600;color:var(--sub)}
+.lb-date{font-size:11px;color:var(--muted)}
+.lb-sep{height:1px;background:#1e1e1e;margin-bottom:16px}
+.lb-text{font-size:14px;color:#aaa;line-height:1.9;word-break:keep-all;padding-bottom:8px}
 .lb-x{
-  margin-top:24px;
+  flex-shrink:0;
+  margin-top:22px;
   display:flex;align-items:center;gap:7px;
   font-size:11px;letter-spacing:1px;text-transform:uppercase;
-  color:rgba(255,255,255,0.5);cursor:pointer;
-  transition:color .2s;
+  color:rgba(255,255,255,0.45);cursor:pointer;transition:color .2s;
+  align-self:center;
 }
 .lb-x:hover{color:#fff}
 .lb-x-icon{
   width:18px;height:18px;border-radius:50%;
-  background:rgba(255,255,255,0.15);
-  display:flex;align-items:center;justify-content:center;
-  font-size:10px;
+  background:rgba(255,255,255,0.13);
+  display:flex;align-items:center;justify-content:center;font-size:10px;
+}
+@media(max-width:600px){
+  .lb{padding:36px 20px}
+  .lb-inner{max-height:calc(100vh - 72px);}
+  .lb-text{font-size:13px}
+  .lb-img-wrap img{max-height:34vh}
 }
 
 /* FOOTER */
@@ -235,7 +282,7 @@ footer{
 .ft-note{font-size:11px;color:var(--muted)}
 @media(max-width:600px){
   header{padding:0 20px}
-  .hero{padding:56px 20px 44px}
+  .hero{padding:32px 20px 22px}
   footer{padding:28px 20px;flex-direction:column;align-items:flex-start}
 }
 
@@ -290,39 +337,35 @@ footer{
 <section class="hero">
   <img class="hero-logo" src="fva_logo_cropped.png" alt="FVA ACADEMY">
   <h1>수강생들의 <em>진짜</em> 후기</h1>
-  <p class="hero-sub">네이버 스토어 검증 리뷰</p>
-  <div class="stats-row">
-    <div style="text-align:center">
-      <span class="stat-num" style="justify-content:center">117<i>개</i></span>
-      <span class="stat-label">Total Reviews</span>
-    </div>
-    <div style="text-align:center">
-      <span class="stat-num" style="justify-content:center">4.98<i>★</i></span>
-      <span class="stat-label">Avg. Rating</span>
-    </div>
-    <div>
-      <span class="stat-num" style="gap:8px;justify-content:center">2024.04 — <span class="live-dot"></span></span>
-      <span class="stat-label">Review Period</span>
-    </div>
-  </div>
 </section>
-
-<nav class="filter-bar">
-  <button class="fbtn on" data-f="all">All <span class="n">117</span></button>
-  <button class="fbtn" data-f="photo">Photo <span class="n">51</span></button>
-  <button class="fbtn" data-f="한달사용">Month Use <span class="n">64</span></button>
-  <button class="fbtn" data-f="일반">General <span class="n">53</span></button>
-</nav>
 
 <div class="wrap">
   <div class="grid" id="grid"></div>
 </div>
 
 <div class="lb" id="lb" onclick="closeLb()">
-  <img id="lbImg" src="" alt="" onclick="event.stopPropagation()">
-  <div class="lb-x" onclick="closeLb()">
-    <div class="lb-x-icon">✕</div>
-    Close
+  <div class="lb-inner" id="lbInner" onclick="event.stopPropagation()">
+    <div class="lb-img-wrap" id="lbImgWrap">
+      <img id="lbImg" src="" alt="">
+    </div>
+    <div class="lb-meta">
+      <div class="lb-stars" id="lbStars"></div>
+      <div class="lb-name-row">
+        <span class="lb-name" id="lbName"></span>
+        <span class="lb-date" id="lbDate"></span>
+      </div>
+      <div class="lb-sep"></div>
+    </div>
+    <div class="lb-scroll-wrap">
+      <div class="lb-scroll" id="lbScroll">
+        <div class="lb-text" id="lbText"></div>
+      </div>
+      <div class="lb-scroll-cue" id="lbScrollCue"></div>
+    </div>
+    <div class="lb-x" onclick="closeLb()">
+      <div class="lb-x-icon">✕</div>
+      Close
+    </div>
   </div>
 </div>
 
@@ -366,7 +409,7 @@ footer{
       var delay = Math.min(i * 35, 500);
       var imgHtml = '';
       if (r.photo) {
-        imgHtml = '<div class="c-img" onclick="openLb(this.dataset.src)" data-src="' + r.photo + '">'
+        imgHtml = '<div class="c-img">'
           + '<img src="' + r.photo + '" alt="" loading="lazy">'
           + '<div class="c-img-over"></div>'
           + '<div class="zoom">⊕</div>'
@@ -379,7 +422,7 @@ footer{
       }
       var cid = 'ct' + i;
       var cardClass = 'card';
-      html += '<div class="' + cardClass + '" style="animation-delay:' + delay + 'ms">'
+      html += '<div class="' + cardClass + '" style="animation-delay:' + delay + 'ms" onclick="openPopup(' + i + ')">'
         + imgHtml
         + '<div class="c-body">'
         + '<div class="c-top">'
@@ -392,9 +435,9 @@ footer{
         + '</div>'
         + '<div class="sep"></div>'
         + '<div class="rev-text clamp" id="' + cid + '">' + clean(r.content) + '</div>'
-        + '<button class="more-btn" data-id="' + cid + '" style="display:none">More +</button>'
+        + '<button class="more-btn" data-idx="' + i + '" style="display:none">More +</button>'
         + '</div>'
-        + '<a class="c-product" href="https://smartstore.naver.com/bowiestudios/products/12653524153" target="_blank" rel="noopener">'
+        + '<a class="c-product" href="https://smartstore.naver.com/bowiestudios/products/12653524153" target="_blank" rel="noopener" onclick="event.stopPropagation()">'
         + '<div class="c-product-icon"><img src="fva_product_thumb.jpg" alt=""></div>'
         + '<div class="c-product-info">'
         + '<span class="c-product-name">' + (r.product || 'FVA 피바아카데미') + '</span>'
@@ -406,7 +449,6 @@ footer{
     }
     document.getElementById('grid').innerHTML = html;
 
-    // 실제로 잘리는 경우에만 More 버튼 노출
     document.querySelectorAll('.rev-text.clamp').forEach(function(el) {
       if (el.scrollHeight > el.clientHeight + 2) {
         var btn = el.nextElementSibling;
@@ -415,40 +457,64 @@ footer{
     });
 
     document.querySelectorAll('.more-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        var el = document.getElementById(this.dataset.id);
-        if (el.classList.contains('clamp')) {
-          el.classList.remove('clamp');
-          this.textContent = 'Less −';
-        } else {
-          el.classList.add('clamp');
-          this.textContent = 'More +';
-          // 다시 접었을 때도 overflow 없으면 버튼 숨김
-          if (el.scrollHeight <= el.clientHeight + 2) this.style.display = 'none';
-        }
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        openPopup(parseInt(this.dataset.idx, 10));
       });
     });
   }
 
-  window.openLb = function(src) {
-    document.getElementById('lbImg').src = src;
+  function fixScrollHeight() {
+    var inner = document.getElementById('lbInner');
+    var scroll = document.getElementById('lbScroll');
+    scroll.style.maxHeight = '';
+    var lbPad = window.innerWidth <= 600 ? 72 : 96;
+    var availH = window.innerHeight - lbPad;
+    var innerH = inner.scrollHeight;
+    if (innerH > availH) {
+      var scrollH = scroll.scrollHeight;
+      var fixedH = innerH - scrollH;
+      var maxScrollH = availH - fixedH;
+      if (maxScrollH > 20) scroll.style.maxHeight = maxScrollH + 'px';
+    }
+  }
+
+  window.openPopup = function(idx) {
+    var list = getList();
+    var r = list[idx];
+    var inner = document.getElementById('lbInner');
+    var imgWrap = document.getElementById('lbImgWrap');
+    if (r.photo) {
+      document.getElementById('lbImg').src = r.photo;
+      inner.classList.remove('no-photo');
+      imgWrap.style.display = '';
+    } else {
+      inner.classList.add('no-photo');
+      imgWrap.style.display = 'none';
+    }
+    document.getElementById('lbStars').innerHTML = stars(r.rating);
+    document.getElementById('lbName').textContent = r.reviewer;
+    document.getElementById('lbDate').textContent = r.date;
+    document.getElementById('lbText').innerHTML = clean(r.content);
+    document.getElementById('lbScroll').scrollTop = 0;
     document.getElementById('lb').classList.add('open');
     document.body.style.overflow = 'hidden';
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        fixScrollHeight();
+        var cue = document.getElementById('lbScrollCue');
+        if (document.getElementById('lbScroll').scrollHeight > document.getElementById('lbScroll').clientHeight) {
+          cue.classList.add('show');
+          requestAnimationFrame(function() { cue.classList.remove('show'); });
+        }
+      });
+    });
   };
   window.closeLb = function() {
     document.getElementById('lb').classList.remove('open');
     document.body.style.overflow = '';
   };
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLb(); });
-
-  document.querySelectorAll('.fbtn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.fbtn').forEach(function(b){ b.classList.remove('on'); });
-      this.classList.add('on');
-      cur = this.dataset.f;
-      render();
-    });
-  });
 
   render();
 })();
